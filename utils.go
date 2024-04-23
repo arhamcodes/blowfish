@@ -23,12 +23,12 @@ func xorArrays(a, b []int64) []int64 {
 	return result
 }
 
-func xorArray_with_Pvalue(L []int64, pValue int64) []int64 {
-	for i := 0; i < len(L); i++ {
-		L[i] = L[i] ^ pValue
-	}
-	return L
-}
+//func xorArray_with_Pvalue(L []int64, pValue int64) []int64 {
+//	for i := 0; i < len(L); i++ {
+//		L[i] = L[i] ^ pValue
+//	}
+//	return L
+//}
 
 func swap(L, R *[]int64) {
 	*L, *R = *R, *L

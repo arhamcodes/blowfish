@@ -42,21 +42,9 @@ func main() {
 	P13 := PArray_in_bits[384:416]
 	P14 := PArray_in_bits[416:448]
 
-	PArray_in_bits = append(P1, P2...)
-	PArray_in_bits = append(PArray_in_bits, P3...)
-	PArray_in_bits = append(PArray_in_bits, P4...)
-	PArray_in_bits = append(PArray_in_bits, P5...)
-	PArray_in_bits = append(PArray_in_bits, P6...)
-	PArray_in_bits = append(PArray_in_bits, P7...)
-	PArray_in_bits = append(PArray_in_bits, P8...)
-	PArray_in_bits = append(PArray_in_bits, P9...)
-	PArray_in_bits = append(PArray_in_bits, P10...)
-	PArray_in_bits = append(PArray_in_bits, P11...)
-	PArray_in_bits = append(PArray_in_bits, P12...)
-	PArray_in_bits = append(PArray_in_bits, P13...)
-	PArray_in_bits = append(PArray_in_bits, P14...)
+	PArray_in_bits_indexed := [][]int64{P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14}
+	fmt.Println(len(PArray_in_bits_indexed))
 
-	fmt.Println(len(PArray_in_bits))
 	//sboxes := initializeSBoxes(PArray)
 	var entered_string string
 	for {
@@ -78,13 +66,13 @@ func main() {
 	bits_array_int_left := bits_array_int[:32]
 	bits_array_int_right := bits_array_int[32:]
 	for i := 0; i < 16; i++ {
-		bits_array_int_left = xorArray_with_Pvalue(bits_array_int_left, int64(PArray_in_bits[i]))
+		bits_array_int_left = xorArrays(bits_array_int_left, PArray_in_bits_indexed[i])
 		bits_array_int_right = xorArrays(F(bits_array_int_left), bits_array_int_right)
 		swap(&bits_array_int_left, &bits_array_int_right)
 	}
 	swap(&bits_array_int_left, &bits_array_int_right)
-	bits_array_int_right = xorArray_with_Pvalue(bits_array_int_right, int64(PArray_in_bits[16]))
-	bits_array_int_left = xorArray_with_Pvalue(bits_array_int_left, int64(PArray_in_bits[17]))
+	bits_array_int_right = xorArrays(bits_array_int_right, PArray_in_bits_indexed[16])
+	bits_array_int_left = xorArrays(bits_array_int_left, PArray_in_bits_indexed[17])
 	bits_array_int = append(bits_array_int_left, bits_array_int_right...)
 	fmt.Println(bits_array_int)
 }
