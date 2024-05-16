@@ -111,6 +111,75 @@ func main() {
 		text += string(b)
 	}
 	fmt.Println("\nThe encrypyed 8 character text is :", text)
+
+	//no decrypt the text
+	var decrypt_sixtyfour_bit_cypher_string string
+	for _, c := range text {
+		decrypt_sixtyfour_bit_cypher_string += fmt.Sprintf("%08b", c)
+	}
+
+	decrypt_L := decrypt_sixtyfour_bit_cypher_string[:len(decrypt_sixtyfour_bit_cypher_string)/2]
+	decrypt_R := decrypt_sixtyfour_bit_cypher_string[len(decrypt_sixtyfour_bit_cypher_string)/2:]
+
+	var decrypt_big_L, decrypt_big_R big.Int
+	decrypt_L_64_bit_cypher, ok := decrypt_big_L.SetString(decrypt_L, 10)
+	if !ok {
+		fmt.Println("error in setting L_64_bit_cypher to big.L")
+	}
+	decrypt_R_64_bit_cypher, ok := decrypt_big_R.SetString(decrypt_R, 10)
+	if !ok {
+		fmt.Println("error in setting R_64_bit_cypher to big.R")
+	}
+
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P14)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P13)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P12)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P11)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P10)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P9)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P8)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P7)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P6)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P5)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P4)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P3)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P2)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+	swap(decrypt_L_64_bit_cypher, decrypt_R_64_bit_cypher)
+	decrypt_L_64_bit_cypher.Xor(decrypt_L_64_bit_cypher, P1)
+	decrypt_R_64_bit_cypher.Xor(decrypt_R_64_bit_cypher, F(decrypt_L_64_bit_cypher.String()))
+
+	crypt = decrypt_L_64_bit_cypher.String() + decrypt_R_64_bit_cypher.String()
+	text = ""
+	for i := 0; i < len(crypt); i += 8 {
+		b, _ := strconv.ParseInt(crypt[i:i+8], 2, 64)
+		text += string(b)
+	}
+	fmt.Println("\nThe decrypted 8 character text is :", text)
 }
 
 func F(bits_stream string) *big.Int {
