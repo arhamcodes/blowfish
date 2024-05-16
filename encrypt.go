@@ -7,7 +7,17 @@ import (
 )
 
 func main() {
-	const sixtyfour_bit_cypher_text string = "arhamtma"
+	var sixtyfour_bit_cypher_text string
+	fmt.Print("Enter a 8 character string: ")
+	fmt.Scan(&sixtyfour_bit_cypher_text)
+	for {
+		if len(sixtyfour_bit_cypher_text) == 8 {
+			break
+		}
+		fmt.Println("Please enter a 8 character string")
+		fmt.Scan("Enter a 8 character string: ")
+		fmt.Scan(&sixtyfour_bit_cypher_text)
+	}
 	var sixtyfour_bit_cypher_string string
 	for _, c := range sixtyfour_bit_cypher_text {
 		sixtyfour_bit_cypher_string += fmt.Sprintf("%08b", c)
@@ -100,7 +110,7 @@ func main() {
 		b, _ := strconv.ParseInt(crypt[i:i+8], 2, 64)
 		text += string(b)
 	}
-	println(text)
+	fmt.Println("\nThe encrypyed 8 character text is :", text)
 }
 
 func F(bits_stream string) *big.Int {
